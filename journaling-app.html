@@ -451,6 +451,12 @@ function userBubble(text) {
 }
 
 let _loadingTimer = null;
+const _waitMessages = [
+  "もう少しだけお待ちくださいね、丁寧に考えています...",
+  "あなたの気持ちにしっかり向き合っています、もう少し...",
+  "もうすぐです、そのままお待ちください🌸"
+];
+let _waitMsgIndex = 0;
 
 function showLoading() {
   const chat = document.getElementById("chatArea");
@@ -466,17 +472,21 @@ function showLoading() {
   chat.appendChild(ld);
   ld.scrollIntoView({ behavior: "smooth", block: "end" });
 
-  _loadingTimer = setTimeout(() => {
+  _waitMsgIndex = 0;
+  function showNextMessage() {
     const txt = document.getElementById("loadingText");
-    if (txt) {
-      txt.style.transition = "opacity 0.5s";
-      txt.style.opacity = "0";
-      setTimeout(() => {
-        txt.textContent = "もう少しだけお待ちくださいね、丁寧に考えています...";
-        txt.style.opacity = "1";
-      }, 500);
-    }
-  }, 40000);
+    if (!txt) return;
+    const msg = _waitMessages[Math.min(_waitMsgIndex, _waitMessages.length - 1)];
+    txt.style.transition = "opacity 0.5s";
+    txt.style.opacity = "0";
+    setTimeout(() => {
+      txt.textContent = msg;
+      txt.style.opacity = "1";
+    }, 500);
+    _waitMsgIndex++;
+    _loadingTimer = setTimeout(showNextMessage, 20000);
+  }
+  _loadingTimer = setTimeout(showNextMessage, 20000);
 }
 
 function removeLoading() {
