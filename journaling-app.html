@@ -384,6 +384,52 @@
     transform: translateY(-1px);
   }
 
+  .share-area {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .copy-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, var(--accent1), var(--gold));
+    border: none;
+    border-radius: 14px;
+    padding: 14px 28px;
+    font-size: 15px;
+    font-family: 'Zen Maru Gothic', sans-serif;
+    font-weight: 500;
+    color: white;
+    cursor: pointer;
+    letter-spacing: 0.1em;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(184,145,74,0.3);
+    width: 100%;
+    justify-content: center;
+  }
+
+  .copy-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(184,145,74,0.4);
+  }
+
+  .copy-btn.copied {
+    background: linear-gradient(135deg, #7a9e7e, #5a8a5e);
+    box-shadow: 0 4px 16px rgba(90,138,94,0.3);
+  }
+
+  .share-hint {
+    font-size: 12px;
+    color: var(--text-light);
+    font-family: 'Zen Maru Gothic', sans-serif;
+    letter-spacing: 0.05em;
+    text-align: center;
+  }
+
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   @keyframes slideUp {
     from { opacity: 0; transform: translateY(16px); }
@@ -752,15 +798,53 @@ function renderSummary(text) {
     <div style="max-width:calc(100% - 48px)">
       <div class="summary-card">
         <span class="label" style="font-size:12px;letter-spacing:0.12em;color:var(--gold);font-family:'Zen Maru Gothic',sans-serif;display:block;margin-bottom:12px;">STEP 5 / 本日のまとめ</span>
-        <div style="font-size:14px;line-height:1.9;color:var(--text);font-weight:300;white-space:pre-wrap">${text}</div>
+        <div id="summaryText" style="font-size:14px;line-height:1.9;color:var(--text);font-weight:300;white-space:pre-wrap">${text}</div>
       </div>
     </div>`;
   chat.appendChild(b);
 
+  const today = new Date().toLocaleDateString('ja-JP', {year:'numeric',month:'long',day:'numeric'});
+  const copyText = '🌸 私を好きになるジャーナリング\n' + today + '\n\n' + text;
+
   document.getElementById("inputSection").innerHTML = `
+    <div class="share-area">
+      <button class="copy-btn" id="copyBtn" onclick="copyToClipboard()">
+        📋 まとめをコピーする
+      </button>
+      <p class="share-hint">コピーしてLINEやインスタに貼り付けられます🌸</p>
+    </div>
     <button class="restart-btn" onclick="restart()">🌸 また話しかける</button>
   `;
+
+  window._copyText = copyText;
   b.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function copyToClipboard() {
+  navigator.clipboard.writeText(window._copyText || "").then(() => {
+    const btn = document.getElementById("copyBtn");
+    btn.classList.add("copied");
+    btn.textContent = "✅ コピーしました！";
+    setTimeout(() => {
+      btn.classList.remove("copied");
+      btn.innerHTML = "📋 まとめをコピーする";
+    }, 3000);
+  }).catch(() => {
+    // フォールバック
+    const ta = document.createElement("textarea");
+    ta.value = window._copyText || "";
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    document.body.removeChild(ta);
+    const btn = document.getElementById("copyBtn");
+    btn.classList.add("copied");
+    btn.textContent = "✅ コピーしました！";
+    setTimeout(() => {
+      btn.classList.remove("copied");
+      btn.innerHTML = "📋 まとめをコピーする";
+    }, 3000);
+  });
 }
 
 function restart() {
