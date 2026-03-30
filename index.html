@@ -1,440 +1,386 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>私を好きになるジャーナリング</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400&family=Shippori+Mincho:wght@400;500&family=Zen+Maru+Gothic:wght@300;400&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #0e0b08;
-    --surface: #1a1410;
-    --gold: #c8a96e;
-    --gold-light: #e8c98e;
-    --gold-dim: #8a6e40;
-    --cream: #f5ede0;
-    --cream-dim: #c8b89a;
-    --text: #f0e6d6;
-    --text-muted: #8a7a68;
-    --border: rgba(200,169,110,0.2);
-    --glow: rgba(200,169,110,0.15);
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>私を好きになるジャーナリング</title>
+    <style>
+        /* 薄いピンクと薄いブラウンを基調とした優しいデザイン (image_5.pngを再現) */
+        body {
+            font-family: 'Hiragino Mincho ProN', 'serif'; /* 優しい明朝体 */
+            background-color: #fdfaf9; /* とても薄いピンクベージュ */
+            color: #5d504a; /* 薄いブラウン */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            margin-top: 20px;
+        }
 
-  html { scroll-behavior: smooth; }
+        .sakura-icon {
+            color: #f4b4ce; /* 薄ピンク */
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
 
-  body {
-    font-family: 'Noto Serif JP', serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
-    cursor: default;
-  }
+        h1 {
+            font-size: 1.8rem;
+            font-weight: normal;
+            color: #a67c52; /* 薄いゴールドブラウン */
+            margin: 0 0 10px 0;
+        }
 
-  /* ── 背景装飾 ── */
-  .bg-orb {
-    position: fixed;
-    border-radius: 50%;
-    filter: blur(80px);
-    pointer-events: none;
-    z-index: 0;
-  }
-  .bg-orb-1 {
-    width: 600px; height: 600px;
-    top: -200px; left: -200px;
-    background: radial-gradient(circle, rgba(180,130,70,0.12) 0%, transparent 70%);
-    animation: float1 12s ease-in-out infinite;
-  }
-  .bg-orb-2 {
-    width: 500px; height: 500px;
-    bottom: -100px; right: -100px;
-    background: radial-gradient(circle, rgba(200,150,80,0.1) 0%, transparent 70%);
-    animation: float2 15s ease-in-out infinite;
-  }
-  .bg-orb-3 {
-    width: 300px; height: 300px;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    background: radial-gradient(circle, rgba(220,180,120,0.06) 0%, transparent 70%);
-    animation: pulse 8s ease-in-out infinite;
-  }
+        .sub-title {
+            font-size: 0.9rem;
+            color: #8c7e75;
+        }
 
-  /* ── メインコンテナ ── */
-  .page {
-    position: relative;
-    z-index: 1;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 60px 24px;
-  }
+        /* ページネーションのドット (image_5.png) */
+        .dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 30px;
+        }
+        .dot {
+            width: 8px;
+            height: 8px;
+            background-color: #e0d6d0;
+            border-radius: 50%;
+        }
+        .dot.active {
+            background-color: #a67c52;
+        }
 
-  /* ── 上部装飾ライン ── */
-  .deco-top {
-    position: absolute;
-    top: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    opacity: 0;
-    animation: fadeIn 1.5s ease 0.3s forwards;
-  }
+        /* チャットエリア */
+        .container {
+            background: #fffdfc; /* ほぼ白に近いピンク */
+            padding: 30px;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(166, 124, 82, 0.05); /* 優しい影 */
+            width: 100%;
+            max-width: 540px;
+            box-sizing: border-box;
+            position: relative;
+        }
 
-  .deco-line {
-    width: 60px;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--gold-dim));
-  }
-  .deco-line.right {
-    background: linear-gradient(90deg, var(--gold-dim), transparent);
-  }
+        /* 左側の飾り (image_5.png) */
+        .side-flower {
+            position: absolute;
+            left: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #f4b4ce;
+            background: #fdfaf9;
+            padding: 5px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+        }
 
-  .deco-center {
-    font-size: 11px;
-    letter-spacing: 0.25em;
-    color: var(--gold-dim);
-    font-family: 'Zen Maru Gothic', sans-serif;
-  }
+        #chat-log {
+            max-height: 500px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
 
-  /* ── 花のシンボル ── */
-  .hero-symbol {
-    font-size: 48px;
-    margin-bottom: 32px;
-    opacity: 0;
-    animation: bloomIn 1.2s cubic-bezier(0.22,1,0.36,1) 0.6s forwards;
-    filter: drop-shadow(0 0 20px rgba(200,169,110,0.4));
-  }
+        .message {
+            margin-bottom: 20px;
+            padding: 15px 20px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            max-width: 90%;
+        }
 
-  /* ── メインタイトル ── */
-  .hero-title {
-    font-family: 'Shippori Mincho', serif;
-    font-size: clamp(28px, 7vw, 52px);
-    font-weight: 400;
-    letter-spacing: 0.15em;
-    text-align: center;
-    line-height: 1.4;
-    opacity: 0;
-    animation: slideUp 1s ease 0.9s forwards;
-  }
+        .ai-message {
+            background-color: #f9f4f0; /* 薄いブラウンベージュ */
+            align-self: flex-start;
+            border-top-left-radius: 5px;
+        }
 
-  .hero-title .line1 {
-    display: block;
-    background: linear-gradient(135deg, var(--cream) 0%, var(--gold-light) 50%, var(--cream) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
+        .user-message {
+            background-color: #fcebef; /* 薄いピンク */
+            color: #5d504a;
+            align-self: flex-end;
+            border-top-right-radius: 5px;
+        }
 
-  .hero-title .line2 {
-    display: block;
-    font-size: 0.55em;
-    color: var(--gold);
-    letter-spacing: 0.2em;
-    margin-top: 12px;
-    font-weight: 300;
-    -webkit-text-fill-color: var(--gold);
-  }
+        /* STEP1の5つの入力欄 (image_6.pngを再現) */
+        .step1-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
 
-  /* ── サブコピー ── */
-  .hero-sub {
-    margin-top: 28px;
-    font-size: clamp(13px, 3vw, 16px);
-    color: var(--cream-dim);
-    font-weight: 200;
-    letter-spacing: 0.12em;
-    line-height: 2;
-    text-align: center;
-    max-width: 420px;
-    opacity: 0;
-    animation: slideUp 1s ease 1.2s forwards;
-  }
+        .input-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
 
-  /* ── 区切り ── */
-  .divider {
-    width: 1px;
-    height: 48px;
-    background: linear-gradient(to bottom, transparent, var(--gold-dim), transparent);
-    margin: 40px auto;
-    opacity: 0;
-    animation: fadeIn 1s ease 1.5s forwards;
-  }
+        .input-number {
+            color: #a67c52;
+            font-size: 0.9rem;
+            width: 15px;
+            text-align: right;
+        }
 
-  /* ── 特徴リスト ── */
-  .features {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    max-width: 360px;
-    width: 100%;
-    margin-bottom: 48px;
-    opacity: 0;
-    animation: slideUp 1s ease 1.6s forwards;
-  }
+        .journal-input {
+            flex-grow: 1;
+            padding: 15px;
+            border: 1px solid #e0d6d0;
+            border-radius: 15px;
+            background-color: #fff;
+            font-family: inherit;
+            color: #5d504a;
+            font-size: 0.9rem;
+        }
 
-  .feature-item {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 14px 20px;
-    background: rgba(200,169,110,0.05);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    transition: all 0.4s ease;
-  }
+        .journal-input::placeholder {
+            color: #c0b3ad; /* 薄い例文の色 (image_6.png) */
+            opacity: 1;
+        }
 
-  .feature-item:hover {
-    background: rgba(200,169,110,0.1);
-    border-color: rgba(200,169,110,0.35);
-    transform: translateX(4px);
-  }
+        /* 通常の入力エリア */
+        .input-area {
+            display: flex;
+            gap: 10px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
 
-  .feature-icon {
-    font-size: 18px;
-    min-width: 24px;
-    text-align: center;
-  }
+        #user-input {
+            flex-grow: 1;
+            padding: 15px;
+            border: 1px solid #e0d6d0;
+            border-radius: 30px;
+            outline: none;
+            font-family: inherit;
+        }
 
-  .feature-text {
-    font-size: 13px;
-    color: var(--cream-dim);
-    letter-spacing: 0.06em;
-    line-height: 1.6;
-    font-family: 'Zen Maru Gothic', sans-serif;
-    font-weight: 300;
-  }
+        /* ゴールドブラウンのボタン (image_6.png) */
+        .send-btn, .next-btn {
+            background-color: #c9a679; /* 次へ > ボタンの色 */
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: background 0.3s;
+        }
 
-  /* ── CTAボタン ── */
-  .cta-wrapper {
-    opacity: 0;
-    animation: bloomIn 1s ease 2s forwards;
-    position: relative;
-  }
+        .send-btn:hover, .next-btn:hover {
+            background-color: #a67c52;
+        }
 
-  .cta-glow {
-    position: absolute;
-    inset: -20px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(200,169,110,0.2) 0%, transparent 70%);
-    animation: pulse 3s ease-in-out infinite;
-  }
+        /* スクロールバーのカスタマイズ */
+        #chat-log::-webkit-scrollbar { width: 6px; }
+        #chat-log::-webkit-scrollbar-track { background: transparent; }
+        #chat-log::-webkit-scrollbar-thumb { background: #e0d6d0; border-radius: 3px; }
 
-  .cta-btn {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 180px;
-    height: 180px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #2a1e10 0%, #1a1208 50%, #2a1e10 100%);
-    border: 1.5px solid var(--gold);
-    color: var(--gold-light);
-    text-decoration: none;
-    cursor: pointer;
-    transition: all 0.5s cubic-bezier(0.22,1,0.36,1);
-    box-shadow:
-      0 0 40px rgba(200,169,110,0.15),
-      inset 0 0 40px rgba(200,169,110,0.05);
-    gap: 8px;
-  }
-
-  .cta-btn::before {
-    content: '';
-    position: absolute;
-    inset: 6px;
-    border-radius: 50%;
-    border: 1px solid rgba(200,169,110,0.2);
-    transition: all 0.5s ease;
-  }
-
-  .cta-btn:hover {
-    transform: scale(1.06);
-    border-color: var(--gold-light);
-    box-shadow:
-      0 0 60px rgba(200,169,110,0.3),
-      0 0 120px rgba(200,169,110,0.1),
-      inset 0 0 40px rgba(200,169,110,0.1);
-    background: linear-gradient(135deg, #3a2a18 0%, #2a1e10 50%, #3a2a18 100%);
-  }
-
-  .cta-btn:hover::before {
-    inset: 4px;
-    border-color: rgba(200,169,110,0.4);
-  }
-
-  .cta-symbol { font-size: 28px; }
-
-  .cta-main {
-    font-family: 'Shippori Mincho', serif;
-    font-size: 17px;
-    letter-spacing: 0.15em;
-    font-weight: 400;
-    background: linear-gradient(135deg, var(--cream), var(--gold-light));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .cta-sub {
-    font-family: 'Zen Maru Gothic', sans-serif;
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    color: var(--gold-dim);
-  }
-
-  /* ── 下部メモ ── */
-  .bottom-note {
-    margin-top: 48px;
-    font-size: 11px;
-    color: var(--text-muted);
-    letter-spacing: 0.1em;
-    font-family: 'Zen Maru Gothic', sans-serif;
-    text-align: center;
-    line-height: 2;
-    opacity: 0;
-    animation: fadeIn 1s ease 2.4s forwards;
-  }
-
-  /* ── フッター装飾 ── */
-  .deco-bottom {
-    position: absolute;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    opacity: 0;
-    animation: fadeIn 1.5s ease 2.5s forwards;
-  }
-
-  .deco-bottom-inner {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
-  /* ── アニメーション ── */
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-  }
-
-  @keyframes slideUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes bloomIn {
-    from { opacity: 0; transform: scale(0.8); }
-    to   { opacity: 1; transform: scale(1); }
-  }
-
-  @keyframes float1 {
-    0%, 100% { transform: translate(0, 0); }
-    50%       { transform: translate(30px, 40px); }
-  }
-
-  @keyframes float2 {
-    0%, 100% { transform: translate(0, 0); }
-    50%       { transform: translate(-30px, -40px); }
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 0.6; transform: scale(1) translate(-50%,-50%); }
-    50%       { opacity: 1;   transform: scale(1.1) translate(-45%,-45%); }
-  }
-
-  /* モバイル */
-  @media (max-width: 480px) {
-    .cta-btn { width: 160px; height: 160px; }
-    .cta-main { font-size: 15px; }
-  }
-</style>
+    </style>
 </head>
 <body>
 
-<!-- 背景 -->
-<div class="bg-orb bg-orb-1"></div>
-<div class="bg-orb bg-orb-2"></div>
-<div class="bg-orb bg-orb-3"></div>
-
-<div class="page">
-
-  <!-- 上部デコ -->
-  <div class="deco-top">
-    <div class="deco-line"></div>
-    <span class="deco-center">JOURNALING</span>
-    <div class="deco-line right"></div>
-  </div>
-
-  <!-- シンボル -->
-  <div class="hero-symbol">🌸</div>
-
-  <!-- タイトル -->
-  <h1 class="hero-title">
-    <span class="line1">私を好きになる</span>
-    <span class="line2">ジャーナリング</span>
-  </h1>
-
-  <!-- サブコピー -->
-  <p class="hero-sub">
-    自分の気持ちと、やさしく向き合う時間。<br>
-    AIと対話しながら、5つのステップで<br>
-    今日の自分を受け取ってあげましょう。
-  </p>
-
-  <div class="divider"></div>
-
-  <!-- 特徴 -->
-  <div class="features">
-    <div class="feature-item">
-      <span class="feature-icon">✦</span>
-      <span class="feature-text">今日の気持ちを5つ書き出す</span>
+    <div class="header">
+        <div class="sakura-icon">🌸</div>
+        <h1>私を好きになるジャーナリング</h1>
+        <div class="sub-title">自分の気持ちと、やさしく向き合う時間</div>
     </div>
-    <div class="feature-item">
-      <span class="feature-icon">✦</span>
-      <span class="feature-text">AIが承認・深掘り・分析してくれる</span>
-    </div>
-    <div class="feature-item">
-      <span class="feature-icon">✦</span>
-      <span class="feature-text">解決策を一緒に選び、前向きになれる</span>
-    </div>
-    <div class="feature-item">
-      <span class="feature-icon">✦</span>
-      <span class="feature-text">最後に今日の自分をまとめて褒めてもらえる</span>
-    </div>
-  </div>
 
-  <!-- CTAボタン -->
-  <div class="cta-wrapper">
-    <div class="cta-glow"></div>
-    <a class="cta-btn" href="journaling-app.html">
-      <span class="cta-symbol">🪷</span>
-      <span class="cta-main">はじめる</span>
-      <span class="cta-sub">TAP TO START</span>
-    </a>
-  </div>
-
-  <!-- 下部メモ -->
-  <p class="bottom-note">
-    所要時間：約10〜15分<br>
-    どんな小さな気持ちでも、大丈夫です
-  </p>
-
-  <!-- 下部デコ -->
-  <div class="deco-bottom">
-    <div class="deco-bottom-inner">
-      <div class="deco-line"></div>
-      <span class="deco-center" style="color:var(--text-muted)">🌸</span>
-      <div class="deco-line right"></div>
+    <div class="dots" id="step-dots">
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
     </div>
-  </div>
 
-</div>
+    <div class="container">
+        <div class="side-flower">🌸</div>
+        
+        <div id="chat-log">
+            <div class="message ai-message">
+                こんにちは。<br>
+                ここはあなただけの、やさしい時間です。<br><br>
+                今日あったこと、今の気持ち、頭の中にあること――<br>
+                どんな小さなことでも大丈夫です。<br>
+                思いつくままに、5つ書いてみてください。
+            </div>
+        </div>
+
+        <div id="step1-area">
+            <div class="step1-inputs">
+                <div class="input-group">
+                    <span class="input-number">1</span>
+                    <input type="text" class="journal-input" placeholder="例：仕事でミスをして落ち込んだ">
+                </div>
+                <div class="input-group">
+                    <span class="input-number">2</span>
+                    <input type="text" class="journal-input" placeholder="例：友達と話せて少し楽になった">
+                </div>
+                <div class="input-group">
+                    <span class="input-number">3</span>
+                    <input type="text" class="journal-input" placeholder="例：なんとなくモヤモヤしている">
+                </div>
+                <div class="input-group">
+                    <span class="input-number">4</span>
+                    <input type="text" class="journal-input" placeholder="例：夜眠れなかった">
+                </div>
+                <div class="input-group">
+                    <span class="input-number">5</span>
+                    <input type="text" class="journal-input" placeholder="例：自分が嫌になる瞬間があった">
+                </div>
+            </div>
+            <div style="text-align: center;">
+                <button class="next-btn" onclick="startJournaling()">次へ 〉</button>
+            </div>
+        </div>
+
+        <div id="normal-input-area" class="input-area" style="display: none;">
+            <input type="text" id="user-input" placeholder="ここに入力...">
+            <button class="send-btn" onclick="sendMessage()">送信</button>
+        </div>
+    </div>
+
+    <script>
+        // 内部ルール（潜在意識という言葉は内緒）
+        const systemPrompt = `
+        あなたはユーザーの心の奥底にある「願い（潜在意識）」を優しく紐解く伴走者です。
+        女子脳的な「共感・承認」を第一に、温かく落ち着いたトーンで接してください。
+        決して解決策を急がず、相手が自分の心に安心して触れられるようサポートします。
+
+        【対話のルール】
+        ・ユーザーはすでに「5つの今の気持ち」を書き出しています。
+        ・あなたはそれを全て丁寧に承認した上で、対話をスタートさせます。
+        ・対話は「承認 🌸」から始め、以下の段階を追って深めます。
+        　1.【なぜ？】1つの項目に焦点を当て、その理由を優しく聞く（選択肢を添える）。
+        　2.【奥の感覚】その時の体感覚や、さらに一歩奥にある気持ちを聞く（選択肢を添える）。
+        　3.【願いのノック】「その気持ちの下には、どんな願いが隠れている気がしますか？」と本心に触れる（選択肢を添える）。
+        　4.【まとめ】①事実、②最初の気持ち、③見えてきた本当の願い、④心からの称賛と励まし、で締めくくる。
+        ※「潜在意識」という言葉は使わず、自然な対話の中で気づきを促します。
+        `;
+
+        let chatHistory = []; // 対話履歴
+
+        // STEP1の「次へ」ボタン
+        async function startJournaling() {
+            const inputs = document.querySelectorAll('.journal-input');
+            let userTexts = [];
+            inputs.forEach((input, index) => {
+                if (input.value) {
+                    userTexts.push(`${index + 1}. ${input.value}`);
+                }
+            });
+
+            if (userTexts.length < 1) {
+                alert("まずは今の気持ちを何か書いてみてくださいね🌸");
+                return;
+            }
+
+            const log = document.getElementById('chat-log');
+            const step1Area = document.getElementById('step1-area');
+            const inputArea = document.getElementById('normal-input-area');
+
+            // ユーザーの入力をチャットに表示
+            const finalUserText = userTexts.join('\n');
+            log.innerHTML += `<div class="message user-message">${finalUserText.replace(/\n/g, '<br>')}</div>`;
+            
+            // 入力エリアを切り替える
+            step1Area.style.display = 'none';
+            inputArea.style.display = 'flex';
+            updateDots(1); // ドットをSTEP2へ
+
+            // AIの最初の返信を取得
+            log.innerHTML += `<div class="message ai-message" id="loading">🌸 お気持ちを受け止めています、少々お待ちくださいね...</div>`;
+            log.scrollTop = log.scrollHeight;
+
+            const aiResponse = await callClaudeAPI(systemPrompt, finalUserText);
+            
+            const loading = document.getElementById('loading');
+            if (loading) loading.remove();
+            
+            log.innerHTML += `<div class="message ai-message">${aiResponse.replace(/\n/g, '<br>')}</div>`;
+            log.scrollTop = log.scrollHeight;
+        }
+
+        // STEP2以降の「送信」ボタン
+        async function sendMessage() {
+            const input = document.getElementById('user-input');
+            const log = document.getElementById('chat-log');
+            if (!input.value) return;
+
+            const userMsg = input.value;
+            log.innerHTML += `<div class="message user-message">${userMsg}</div>`;
+            input.value = '';
+            log.scrollTop = log.scrollHeight;
+
+            log.innerHTML += `<div class="message ai-message" id="loading">🌸 心を込めてお返事を考えています...</div>`;
+            log.scrollTop = log.scrollHeight;
+
+            const aiResponse = await callClaudeAPI(systemPrompt, userMsg);
+
+            const loading = document.getElementById('loading');
+            if (loading) loading.remove();
+
+            log.innerHTML += `<div class="message ai-message">${aiResponse.replace(/\n/g, '<br>')}</div>`;
+            log.scrollTop = log.scrollHeight;
+
+            // 会話が進むにつれてドットを少しずつ進める（簡易実装）
+            if(chatHistory.length > 4) updateDots(2);
+            if(chatHistory.length > 6) updateDots(3);
+            if(chatHistory.length > 8) updateDots(4);
+        }
+
+        // Vercel経由でClaudeを呼び出す
+        async function callClaudeAPI(system, message) {
+            // 履歴に追加
+            chatHistory.push({ role: "user", content: message });
+
+            try {
+                const response = await fetch("/api/chat", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ system: system, messages: chatHistory })
+                });
+                
+                if (!response.ok) throw new Error('通信エラーです🌸');
+                
+                const data = await response.json();
+                
+                // AIの返信を履歴に追加
+                chatHistory.push({ role: "assistant", content: data.text });
+                return data.text;
+
+            } catch (e) {
+                console.error(e);
+                return "申し訳ありません。接続がうまくいきませんでした。APIキーがVercelに設定されているか、確認してみてくださいね🌸";
+            }
+        }
+
+        // ドットの表示を更新
+        function updateDots(activeInput) {
+            const dots = document.querySelectorAll('#step-dots .dot');
+            dots.forEach((dot, index) => {
+                if (index === activeInput) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+    </script>
 </body>
 </html>
