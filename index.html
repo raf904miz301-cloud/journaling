@@ -3,384 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>私を好きになるジャーナリング</title>
+    <title>My Journaling App</title>
     <style>
-        /* 薄いピンクと薄いブラウンを基調とした優しいデザイン (image_5.pngを再現) */
-        body {
-            font-family: 'Hiragino Mincho ProN', 'serif'; /* 優しい明朝体 */
-            background-color: #fdfaf9; /* とても薄いピンクベージュ */
-            color: #5d504a; /* 薄いブラウン */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            margin-top: 20px;
-        }
-
-        .sakura-icon {
-            color: #f4b4ce; /* 薄ピンク */
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-
-        h1 {
-            font-size: 1.8rem;
-            font-weight: normal;
-            color: #a67c52; /* 薄いゴールドブラウン */
-            margin: 0 0 10px 0;
-        }
-
-        .sub-title {
-            font-size: 0.9rem;
-            color: #8c7e75;
-        }
-
-        /* ページネーションのドット (image_5.png) */
-        .dots {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 30px;
-        }
-        .dot {
-            width: 8px;
-            height: 8px;
-            background-color: #e0d6d0;
-            border-radius: 50%;
-        }
-        .dot.active {
-            background-color: #a67c52;
-        }
-
-        /* チャットエリア */
-        .container {
-            background: #fffdfc; /* ほぼ白に近いピンク */
-            padding: 30px;
-            border-radius: 30px;
-            box-shadow: 0 10px 30px rgba(166, 124, 82, 0.05); /* 優しい影 */
-            width: 100%;
-            max-width: 540px;
-            box-sizing: border-box;
-            position: relative;
-        }
-
-        /* 左側の飾り (image_5.png) */
-        .side-flower {
-            position: absolute;
-            left: -15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #f4b4ce;
-            background: #fdfaf9;
-            padding: 5px;
-            border-radius: 50%;
-            font-size: 1.2rem;
-        }
-
-        #chat-log {
-            max-height: 500px;
-            overflow-y: auto;
-            margin-bottom: 20px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .message {
-            margin-bottom: 20px;
-            padding: 15px 20px;
-            border-radius: 20px;
-            font-size: 0.95rem;
-            line-height: 1.7;
-            max-width: 90%;
-        }
-
-        .ai-message {
-            background-color: #f9f4f0; /* 薄いブラウンベージュ */
-            align-self: flex-start;
-            border-top-left-radius: 5px;
-        }
-
-        .user-message {
-            background-color: #fcebef; /* 薄いピンク */
-            color: #5d504a;
-            align-self: flex-end;
-            border-top-right-radius: 5px;
-        }
-
-        /* STEP1の5つの入力欄 (image_6.pngを再現) */
-        .step1-inputs {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .input-group {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .input-number {
-            color: #a67c52;
-            font-size: 0.9rem;
-            width: 15px;
-            text-align: right;
-        }
-
-        .journal-input {
-            flex-grow: 1;
-            padding: 15px;
-            border: 1px solid #e0d6d0;
-            border-radius: 15px;
-            background-color: #fff;
-            font-family: inherit;
-            color: #5d504a;
-            font-size: 0.9rem;
-        }
-
-        .journal-input::placeholder {
-            color: #c0b3ad; /* 薄い例文の色 (image_6.png) */
-            opacity: 1;
-        }
-
-        /* 通常の入力エリア */
-        .input-area {
-            display: flex;
-            gap: 10px;
-            border-top: 1px solid #eee;
-            padding-top: 20px;
-        }
-
-        #user-input {
-            flex-grow: 1;
-            padding: 15px;
-            border: 1px solid #e0d6d0;
-            border-radius: 30px;
-            outline: none;
-            font-family: inherit;
-        }
-
-        /* ゴールドブラウンのボタン (image_6.png) */
-        .send-btn, .next-btn {
-            background-color: #c9a679; /* 次へ > ボタンの色 */
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 0.95rem;
-            transition: background 0.3s;
-        }
-
-        .send-btn:hover, .next-btn:hover {
-            background-color: #a67c52;
-        }
-
-        /* スクロールバーのカスタマイズ */
-        #chat-log::-webkit-scrollbar { width: 6px; }
-        #chat-log::-webkit-scrollbar-track { background: transparent; }
-        #chat-log::-webkit-scrollbar-thumb { background: #e0d6d0; border-radius: 3px; }
-
+        body { font-family: sans-serif; max-width: 600px; margin: 20px auto; padding: 20px; background-color: #f5f5f5; }
+        .container { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h1 { color: #333; font-size: 24px; text-align: center; }
+        textarea { width: 100%; height: 150px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; margin-bottom: 10px; resize: none; }
+        button { width: 100%; padding: 12px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        button:disabled { background-color: #ccc; }
+        #response { margin-top: 20px; padding: 15px; border-left: 5px solid #4CAF50; background: #f9f9f9; display: none; white-space: pre-wrap; line-height: 1.6; }
+        .loading { text-align: center; color: #666; display: none; margin-top: 10px; }
     </style>
 </head>
 <body>
-
-    <div class="header">
-        <div class="sakura-icon">🌸</div>
-        <h1>私を好きになるジャーナリング</h1>
-        <div class="sub-title">自分の気持ちと、やさしく向き合う時間</div>
-    </div>
-
-    <div class="dots" id="step-dots">
-        <div class="dot active"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-    </div>
-
     <div class="container">
-        <div class="side-flower">🌸</div>
-        
-        <div id="chat-log">
-            <div class="message ai-message">
-                こんにちは。<br>
-                ここはあなただけの、やさしい時間です。<br><br>
-                今日あったこと、今の気持ち、頭の中にあること――<br>
-                どんな小さなことでも大丈夫です。<br>
-                思いつくままに、5つ書いてみてください。
-            </div>
-        </div>
-
-        <div id="step1-area">
-            <div class="step1-inputs">
-                <div class="input-group">
-                    <span class="input-number">1</span>
-                    <input type="text" class="journal-input" placeholder="例：仕事でミスをして落ち込んだ">
-                </div>
-                <div class="input-group">
-                    <span class="input-number">2</span>
-                    <input type="text" class="journal-input" placeholder="例：友達と話せて少し楽になった">
-                </div>
-                <div class="input-group">
-                    <span class="input-number">3</span>
-                    <input type="text" class="journal-input" placeholder="例：なんとなくモヤモヤしている">
-                </div>
-                <div class="input-group">
-                    <span class="input-number">4</span>
-                    <input type="text" class="journal-input" placeholder="例：夜眠れなかった">
-                </div>
-                <div class="input-group">
-                    <span class="input-number">5</span>
-                    <input type="text" class="journal-input" placeholder="例：自分が嫌になる瞬間があった">
-                </div>
-            </div>
-            <div style="text-align: center;">
-                <button class="next-btn" onclick="startJournaling()">次へ 〉</button>
-            </div>
-        </div>
-
-        <div id="normal-input-area" class="input-area" style="display: none;">
-            <input type="text" id="user-input" placeholder="ここに入力...">
-            <button class="send-btn" onclick="sendMessage()">送信</button>
-        </div>
+        <h1>ジャーナリング</h1>
+        <textarea id="journalInput" placeholder="今の気持ちを書いてみましょう..."></textarea>
+        <button id="sendBtn">AIに話しかける</button>
+        <div id="loading" class="loading">AIが考え中...</div>
+        <div id="response"></div>
     </div>
 
     <script>
-        // 内部ルール（潜在意識という言葉は内緒）
-        const systemPrompt = `
-        あなたはユーザーの心の奥底にある「願い（潜在意識）」を優しく紐解く伴走者です。
-        女子脳的な「共感・承認」を第一に、温かく落ち着いたトーンで接してください。
-        決して解決策を急がず、相手が自分の心に安心して触れられるようサポートします。
+        const input = document.getElementById('journalInput');
+        const btn = document.getElementById('sendBtn');
+        const responseDiv = document.getElementById('response');
+        const loading = document.getElementById('loading');
 
-        【対話のルール】
-        ・ユーザーはすでに「5つの今の気持ち」を書き出しています。
-        ・あなたはそれを全て丁寧に承認した上で、対話をスタートさせます。
-        ・対話は「承認 🌸」から始め、以下の段階を追って深めます。
-        　1.【なぜ？】1つの項目に焦点を当て、その理由を優しく聞く（選択肢を添える）。
-        　2.【奥の感覚】その時の体感覚や、さらに一歩奥にある気持ちを聞く（選択肢を添える）。
-        　3.【願いのノック】「その気持ちの下には、どんな願いが隠れている気がしますか？」と本心に触れる（選択肢を添える）。
-        　4.【まとめ】①事実、②最初の気持ち、③見えてきた本当の願い、④心からの称賛と励まし、で締めくくる。
-        ※「潜在意識」という言葉は使わず、自然な対話の中で気づきを促します。
-        `;
+        btn.addEventListener('click', async () => {
+            const text = input.value.trim();
+            if (!text) return;
 
-        let chatHistory = []; // 対話履歴
-
-        // STEP1の「次へ」ボタン
-        async function startJournaling() {
-            const inputs = document.querySelectorAll('.journal-input');
-            let userTexts = [];
-            inputs.forEach((input, index) => {
-                if (input.value) {
-                    userTexts.push(`${index + 1}. ${input.value}`);
-                }
-            });
-
-            if (userTexts.length < 1) {
-                alert("まずは今の気持ちを何か書いてみてくださいね🌸");
-                return;
-            }
-
-            const log = document.getElementById('chat-log');
-            const step1Area = document.getElementById('step1-area');
-            const inputArea = document.getElementById('normal-input-area');
-
-            // ユーザーの入力をチャットに表示
-            const finalUserText = userTexts.join('\n');
-            log.innerHTML += `<div class="message user-message">${finalUserText.replace(/\n/g, '<br>')}</div>`;
-            
-            // 入力エリアを切り替える
-            step1Area.style.display = 'none';
-            inputArea.style.display = 'flex';
-            updateDots(1); // ドットをSTEP2へ
-
-            // AIの最初の返信を取得
-            log.innerHTML += `<div class="message ai-message" id="loading">🌸 お気持ちを受け止めています、少々お待ちくださいね...</div>`;
-            log.scrollTop = log.scrollHeight;
-
-            const aiResponse = await callClaudeAPI(systemPrompt, finalUserText);
-            
-            const loading = document.getElementById('loading');
-            if (loading) loading.remove();
-            
-            log.innerHTML += `<div class="message ai-message">${aiResponse.replace(/\n/g, '<br>')}</div>`;
-            log.scrollTop = log.scrollHeight;
-        }
-
-        // STEP2以降の「送信」ボタン
-        async function sendMessage() {
-            const input = document.getElementById('user-input');
-            const log = document.getElementById('chat-log');
-            if (!input.value) return;
-
-            const userMsg = input.value;
-            log.innerHTML += `<div class="message user-message">${userMsg}</div>`;
-            input.value = '';
-            log.scrollTop = log.scrollHeight;
-
-            log.innerHTML += `<div class="message ai-message" id="loading">🌸 心を込めてお返事を考えています...</div>`;
-            log.scrollTop = log.scrollHeight;
-
-            const aiResponse = await callClaudeAPI(systemPrompt, userMsg);
-
-            const loading = document.getElementById('loading');
-            if (loading) loading.remove();
-
-            log.innerHTML += `<div class="message ai-message">${aiResponse.replace(/\n/g, '<br>')}</div>`;
-            log.scrollTop = log.scrollHeight;
-
-            // 会話が進むにつれてドットを少しずつ進める（簡易実装）
-            if(chatHistory.length > 4) updateDots(2);
-            if(chatHistory.length > 6) updateDots(3);
-            if(chatHistory.length > 8) updateDots(4);
-        }
-
-        // Vercel経由でClaudeを呼び出す
-        async function callClaudeAPI(system, message) {
-            // 履歴に追加
-            chatHistory.push({ role: "user", content: message });
+            btn.disabled = true;
+            loading.style.display = 'block';
+            responseDiv.style.display = 'none';
 
             try {
-                const response = await fetch("/api/chat", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ system: system, messages: chatHistory })
+                // あなたのフォルダ名「API」に完全に合わせました
+                const response = await fetch('/API/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: text })
                 });
-                
-                if (!response.ok) throw new Error('通信エラーです🌸');
-                
+
                 const data = await response.json();
-                
-                // AIの返信を履歴に追加
-                chatHistory.push({ role: "assistant", content: data.text });
-                return data.text;
 
-            } catch (e) {
-                console.error(e);
-                return "申し訳ありません。接続がうまくいきませんでした。APIキーがVercelに設定されているか、確認してみてくださいね🌸";
-            }
-        }
-
-        // ドットの表示を更新
-        function updateDots(activeInput) {
-            const dots = document.querySelectorAll('#step-dots .dot');
-            dots.forEach((dot, index) => {
-                if (index === activeInput) {
-                    dot.classList.add('active');
+                if (response.ok) {
+                    const reply = data.content && data.content[0] ? data.content[0].text : '返信を受け取れませんでした。';
+                    responseDiv.innerText = reply;
+                    responseDiv.style.display = 'block';
                 } else {
-                    dot.classList.remove('active');
+                    throw new Error(data.error || '接続に失敗しました。');
                 }
-            });
-        }
+            } catch (err) {
+                alert('エラーが発生しました: ' + err.message);
+            } finally {
+                btn.disabled = false;
+                loading.style.display = 'none';
+            }
+        });
     </script>
 </body>
 </html>
