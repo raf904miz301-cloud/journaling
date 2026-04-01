@@ -26,7 +26,7 @@ interface StepData {
 
 const STORAGE_KEY = 'journaling_usage_v1';
 const MAX_DAILY = 3;
-const INSTAGRAM_ID = 'studio_mizuki';
+const INSTAGRAM_ID = 'studio_mizuki919';
 
 function getTodayJST(): string {
   return new Date().toLocaleDateString('ja-JP', { timeZone: 'Asia/Tokyo' });
