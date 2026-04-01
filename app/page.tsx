@@ -85,7 +85,7 @@ function AIMessage({ text }: { text: string }) {
           あなたのガイド
         </span>
       </div>
-      <div style={{ fontSize: '0.95rem', lineHeight: 1.9, color: '#2c2520', whiteSpace: 'pre-wrap' }}>
+      <div style={{ fontSize: '0.95rem', lineHeight: 1.9, color: '#2c2520', whiteSpace: 'pre-wrap', fontFamily: "'Shippori Mincho', serif" }}>
         {text}
       </div>
     </div>
@@ -98,10 +98,10 @@ function SuggestionBtn({ text, selected, onClick }: { text: string; selected: bo
       background: selected ? 'linear-gradient(135deg, #f5e6e0, #fff0eb)' : '#fffef9',
       border: `1.5px solid ${selected ? '#d4847a' : '#e8d5b0'}`,
       borderRadius: 14, padding: '14px 20px',
-      fontFamily: "'Zen Maru Gothic', sans-serif",
-      fontSize: '0.875rem', color: selected ? '#b85c52' : '#5a4f4a',
+      fontFamily: "'Shippori Mincho', serif",
+      fontSize: '0.95rem', color: selected ? '#b85c52' : '#5a4f4a',
       cursor: 'pointer', textAlign: 'left', width: '100%',
-      lineHeight: 1.6, transition: 'all 0.25s ease', marginBottom: 10,
+      lineHeight: 1.7, transition: 'all 0.25s ease', marginBottom: 10,
     }}>
       {selected ? '✓ ' : ''}{text}
     </button>
@@ -124,7 +124,7 @@ function LimitModal({ onClose }: { onClose: () => void }) {
         <h2 style={{ fontFamily: "'Shippori Mincho', serif", fontSize: '1.2rem', color: '#2c2520', marginBottom: 16 }}>
           今日の3回が終わりました
         </h2>
-        <p style={{ fontSize: '0.95rem', color: '#5a4f4a', lineHeight: 2, marginBottom: 28 }}>
+        <p style={{ fontFamily: "'Shippori Mincho', serif", fontSize: '0.95rem', color: '#5a4f4a', lineHeight: 2, marginBottom: 28 }}>
           もっと深堀りしたい方は、<br />
           <strong>スタジオミヅキにDM</strong>ください 🌸<br /><br />
           毎朝0時にリセットされます 🌅
@@ -134,9 +134,10 @@ function LimitModal({ onClose }: { onClose: () => void }) {
           background: 'linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045)',
           color: 'white', textDecoration: 'none', borderRadius: 14, padding: '14px 32px',
           fontSize: '0.875rem', marginBottom: 16,
+          fontFamily: "'Shippori Mincho', serif",
         }}>📩 スタジオミヅキにDMを送る</a>
         <br />
-        <button onClick={onClose} style={{ background: 'transparent', border: 'none', fontSize: '0.8rem', color: '#8a7e79', cursor: 'pointer', marginTop: 8 }}>閉じる</button>
+        <button onClick={onClose} style={{ background: 'transparent', border: 'none', fontSize: '0.8rem', color: '#8a7e79', cursor: 'pointer', marginTop: 8, fontFamily: "'Shippori Mincho', serif" }}>閉じる</button>
       </div>
     </div>
   );
@@ -190,13 +191,8 @@ export default function JournalingApp() {
   const handleStep1Submit = async () => {
     const filled = feelings.filter(f => f.trim());
     if (filled.length < 3) return;
-    // 送信前にカウントを確認（4回目以降はモーダル表示）
     const current = getUsageCount();
-    if (current >= MAX_DAILY) {
-      setShowLimitModal(true);
-      return;
-    }
-    // 3回目以内なら進む（カウントを増やしてからAI呼び出し）
+    if (current >= MAX_DAILY) { setShowLimitModal(true); return; }
     incrementUsage();
     setUsageCount(current + 1);
     setHasStarted(true);
@@ -232,11 +228,7 @@ export default function JournalingApp() {
 
   const restartApp = () => {
     const current = getUsageCount();
-    // もう一度はじめるを押したとき、残回数0ならモーダルを表示
-    if (current >= MAX_DAILY) {
-      setShowLimitModal(true);
-      return;
-    }
+    if (current >= MAX_DAILY) { setShowLimitModal(true); return; }
     setStep(1); setFeelings(['', '', '', '', '']); setStepData({});
     setSummary(null); setHasStarted(false); setConversationHistory([]);
     setUsageCount(current);
@@ -251,8 +243,8 @@ export default function JournalingApp() {
       : enabled ? 'linear-gradient(135deg, #d4847a, #b85c52)' : '#e8d5b0',
     color: 'white', border: 'none', borderRadius: 16,
     padding: '16px 32px',
-    fontFamily: "'Zen Maru Gothic', sans-serif",
-    fontSize: '0.95rem', letterSpacing: '0.08em',
+    fontFamily: "'Shippori Mincho', serif",
+    fontSize: '1rem', letterSpacing: '0.1em',
     cursor: enabled && !isLoading ? 'pointer' : 'not-allowed',
     transition: 'all 0.3s ease',
     boxShadow: enabled ? '0 4px 20px rgba(184,92,82,0.25)' : 'none',
@@ -266,21 +258,25 @@ export default function JournalingApp() {
         @keyframes dotBounce { 0%,80%,100% { transform:scale(0.7); opacity:0.5; } 40% { transform:scale(1); opacity:1; } }
         * { box-sizing:border-box; margin:0; padding:0; }
         body {
-          font-family:'Zen Maru Gothic',sans-serif;
+          font-family:'Shippori Mincho', serif;
           background-color:#faf7f2; color:#2c2520; min-height:100vh;
           background-image:
             radial-gradient(ellipse at 20% 50%,rgba(212,132,122,0.06) 0%,transparent 60%),
             radial-gradient(ellipse at 80% 20%,rgba(139,168,136,0.06) 0%,transparent 50%);
           background-attachment:fixed;
         }
-        textarea,input { font-family:'Zen Maru Gothic',sans-serif; }
-        textarea:focus,input:focus { outline:none; }
+        textarea, input { font-family:'Shippori Mincho', serif; }
+        textarea:focus, input:focus { outline:none; }
         ::-webkit-scrollbar { width:6px; }
         ::-webkit-scrollbar-thumb { background:#e8d5b0; border-radius:3px; }
         .app-inner { max-width:660px; margin:0 auto; padding:0 20px; min-height:100vh; }
         .app-card { background:#fffef9; border-radius:24px; padding:36px; box-shadow:0 4px 32px rgba(44,37,32,0.07); border:1px solid rgba(255,255,255,0.8); margin-bottom:20px; position:relative; overflow:hidden; animation:cardIn 0.5s ease forwards; }
+
+        /* ①キーボードが出ても上にスクロールできるよう下部に余白 */
+        .app-inner { padding-bottom: 200px; }
+
         @media (max-width: 480px) {
-          .app-inner { padding: 0 8px !important; }
+          .app-inner { padding: 0 8px 200px !important; }
           .app-card { padding: 20px 14px !important; border-radius: 16px !important; }
         }
       `}</style>
@@ -292,7 +288,7 @@ export default function JournalingApp() {
           <h1 style={{ fontFamily: "'Shippori Mincho',serif", fontSize: 'clamp(1.4rem,5vw,1.85rem)', color: '#2c2520', letterSpacing: '0.14em', lineHeight: 1.5, fontWeight: 600 }}>
             私を好きになる<br />ジャーナリング
           </h1>
-          <p style={{ fontSize: '0.75rem', color: '#8a7e79', letterSpacing: '0.2em', marginTop: 10 }}>— 自分の気持ちに、やさしく寄り添う —</p>
+          <p style={{ fontFamily: "'Shippori Mincho',serif", fontSize: '0.75rem', color: '#8a7e79', letterSpacing: '0.2em', marginTop: 10 }}>— 自分の気持ちに、やさしく寄り添う —</p>
           <div style={{ width: 60, height: 1, background: 'linear-gradient(90deg,transparent,#c9a96e,transparent)', margin: '20px auto 0' }} />
         </header>
 
@@ -303,7 +299,7 @@ export default function JournalingApp() {
                 <div key={i} style={{ width: 10, height: 10, borderRadius: '50%', background: i < usageCount ? '#d4847a' : '#e8d5b0' }} />
               ))}
             </div>
-            <p style={{ fontSize: '0.7rem', color: '#8a7e79' }}>
+            <p style={{ fontFamily: "'Shippori Mincho',serif", fontSize: '0.8rem', color: '#8a7e79' }}>
               {remaining > 0 ? `本日あと ${remaining} 回利用できます` : '本日の利用回数に達しました（毎朝0時リセット）'}
             </p>
           </div>
@@ -314,7 +310,7 @@ export default function JournalingApp() {
             {([1,2,3,4,5,6] as Step[]).map(s => (
               <div key={s} style={{ width: s===step?28:9, height:9, borderRadius: s===step?5:'50%', background: s<step?'#8ba888':s===step?'#c9a96e':'#e8d5b0', transition:'all 0.4s ease' }} />
             ))}
-            <span style={{ fontSize: '0.72rem', color: '#8a7e79', marginLeft: 8 }}>{STEP_LABELS[step]}</span>
+            <span style={{ fontFamily: "'Shippori Mincho',serif", fontSize: '0.8rem', color: '#8a7e79', marginLeft: 8 }}>{STEP_LABELS[step]}</span>
           </div>
         )}
 
@@ -322,19 +318,34 @@ export default function JournalingApp() {
         {step === 1 && (
           <div className="app-card">
             <div style={{ position:'absolute', top:0, left:0, right:0, height:3, background:'linear-gradient(90deg,#d4847a,#c9a96e,#8ba888)', opacity:0.6 }} />
-            <p style={{ fontSize:'0.95rem', lineHeight:1.9, color:'#5a4f4a', marginBottom:28 }}>
+            <p style={{ fontFamily: "'Shippori Mincho',serif", fontSize:'1rem', lineHeight:2, color:'#5a4f4a', marginBottom:28 }}>
               今日の気持ち、出来事、もやもやしていること…<br />思いつくままに、5つ書いてみてください。
             </p>
-            <div style={{ display:'flex', flexDirection:'column', gap:12, marginBottom:28 }}>
+            <div style={{ display:'flex', flexDirection:'column', gap:16, marginBottom:28 }}>
               {feelings.map((f,i) => (
-                <div key={i} style={{ display:'flex', alignItems:'center', gap:10 }}>
-                  <div style={{ width:28, height:28, borderRadius:'50%', background:'linear-gradient(135deg,#d4847a,#c9a96e)', color:'white', fontSize:'0.75rem', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, fontWeight:500 }}>{i+1}</div>
-                  <input type="text" value={f}
+                <div key={i} style={{ display:'flex', alignItems:'flex-start', gap:10 }}>
+                  <div style={{ width:28, height:28, borderRadius:'50%', background:'linear-gradient(135deg,#d4847a,#c9a96e)', color:'white', fontSize:'0.75rem', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, fontWeight:500, marginTop:4 }}>{i+1}</div>
+                  {/* ③ textareaに変更→自動で折り返し・確認できる */}
+                  <textarea
+                    value={f}
                     onChange={e => { const next=[...feelings]; next[i]=e.target.value; setFeelings(next); }}
                     placeholder={['例：仕事でミスをして落ち込んでいる','例：なんとなく気力がわかない','例：友人に言われた一言が気になっている','例：最近よく眠れない','例：自分に自信がない'][i]}
-                    style={{ flex:1, background:'#faf7f2', border:'1.5px solid #e8d5b0', borderRadius:12, padding:'12px 14px', fontSize:'0.9rem', color:'#2c2520', transition:'all 0.3s ease', minWidth:0 }}
+                    rows={2}
+                    style={{
+                      flex:1, background:'#faf7f2', border:'1.5px solid #e8d5b0', borderRadius:12,
+                      padding:'12px 14px', fontSize:'1rem', color:'#2c2520',
+                      transition:'all 0.3s ease', minWidth:0,
+                      fontFamily:"'Shippori Mincho', serif",
+                      resize:'none', lineHeight:1.7,
+                      overflowY:'hidden',
+                    }}
                     onFocus={e => { e.target.style.borderColor='#c9a96e'; e.target.style.background='#fffef9'; e.target.style.boxShadow='0 0 0 3px rgba(201,169,110,0.12)'; }}
                     onBlur={e => { e.target.style.borderColor='#e8d5b0'; e.target.style.background='#faf7f2'; e.target.style.boxShadow='none'; }}
+                    onInput={e => {
+                      const t = e.target as HTMLTextAreaElement;
+                      t.style.height = 'auto';
+                      t.style.height = t.scrollHeight + 'px';
+                    }}
                   />
                 </div>
               ))}
@@ -347,7 +358,7 @@ export default function JournalingApp() {
             {loading && (
               <div style={{ marginTop: 12 }}>
                 <LoadingDots />
-                {waitMessage && <p style={{ textAlign:'center', fontSize:'0.8rem', color:'#8a7e79', marginTop:8 }}>少々お待ちください、丁寧に考えています… 🌸</p>}
+                {waitMessage && <p style={{ textAlign:'center', fontSize:'0.85rem', color:'#8a7e79', marginTop:8, fontFamily:"'Shippori Mincho',serif" }}>少々お待ちください、丁寧に考えています… 🌸</p>}
               </div>
             )}
           </div>
@@ -366,20 +377,20 @@ export default function JournalingApp() {
               <AIMessage text={ai.acknowledgment} />
               {ai.deepDive && (
                 <div style={{ padding:'16px 20px', marginBottom:24, background:'rgba(201,169,110,0.08)', borderRadius:14, borderLeft:'3px solid #c9a96e' }}>
-                  <p style={{ fontSize:'0.875rem', lineHeight:1.8, color:'#5a4f4a' }}>{ai.deepDive}</p>
+                  <p style={{ fontFamily:"'Shippori Mincho',serif", fontSize:'0.95rem', lineHeight:1.9, color:'#5a4f4a' }}>{ai.deepDive}</p>
                 </div>
               )}
-              <div style={{ fontSize:'0.68rem', letterSpacing:'0.2em', color:'#8a7e79', marginBottom:16, display:'flex', alignItems:'center', gap:8 }}>
+              <div style={{ fontFamily:"'Shippori Mincho',serif", fontSize:'0.75rem', letterSpacing:'0.2em', color:'#8a7e79', marginBottom:16, display:'flex', alignItems:'center', gap:8 }}>
                 {s===5?'前向きな気持ちになるために':'次のステップとして、どれが気になりますか？'}
                 <div style={{ flex:1, height:1, background:'linear-gradient(90deg,#e8d5b0,transparent)' }} />
               </div>
               <div style={{ marginBottom:20 }}>
                 {ai.suggestions.map((sug,i) => <SuggestionBtn key={i} text={sug} selected={data.selectedSuggestion===sug} onClick={()=>updateStepField(s,'selectedSuggestion',sug)} />)}
               </div>
-              <p style={{ fontSize:'0.8rem', color:'#8a7e79', marginBottom:10 }}>{ai.inviteText||'自由に書いてもOKです'}</p>
+              <p style={{ fontFamily:"'Shippori Mincho',serif", fontSize:'0.85rem', color:'#8a7e79', marginBottom:10 }}>{ai.inviteText||'自由に書いてもOKです'}</p>
               <textarea value={data.freeText} onChange={e=>updateStepField(s,'freeText',e.target.value)}
                 placeholder="自由に書いてみてください…" rows={3}
-                style={{ width:'100%', background:'#faf7f2', border:'1.5px solid #e8d5b0', borderRadius:16, padding:'16px 20px', fontSize:'0.9rem', color:'#2c2520', resize:'vertical', lineHeight:1.7, transition:'all 0.3s ease', marginBottom:20 }}
+                style={{ width:'100%', background:'#faf7f2', border:'1.5px solid #e8d5b0', borderRadius:16, padding:'16px 20px', fontSize:'1rem', color:'#2c2520', resize:'vertical', lineHeight:1.8, transition:'all 0.3s ease', marginBottom:20, fontFamily:"'Shippori Mincho',serif" }}
                 onFocus={e=>{e.target.style.borderColor='#c9a96e';e.target.style.background='#fffef9';e.target.style.boxShadow='0 0 0 3px rgba(201,169,110,0.12)';}}
                 onBlur={e=>{e.target.style.borderColor='#e8d5b0';e.target.style.background='#faf7f2';e.target.style.boxShadow='none';}}
               />
@@ -390,7 +401,7 @@ export default function JournalingApp() {
               {loading && (
                 <div style={{ marginTop: 12 }}>
                   <LoadingDots />
-                  {waitMessage && <p style={{ textAlign:'center', fontSize:'0.8rem', color:'#8a7e79', marginTop:8 }}>少々お待ちください、丁寧に考えています… 🌸</p>}
+                  {waitMessage && <p style={{ textAlign:'center', fontFamily:"'Shippori Mincho',serif", fontSize:'0.85rem', color:'#8a7e79', marginTop:8 }}>少々お待ちください、丁寧に考えています… 🌸</p>}
                 </div>
               )}
             </div>
@@ -404,23 +415,23 @@ export default function JournalingApp() {
               <h2 style={{ fontFamily:"'Shippori Mincho',serif", fontSize:'1.1rem', color:'#2c2520', letterSpacing:'0.12em', marginBottom:28, textAlign:'center' }}>✨ 本日のまとめ</h2>
               {[{label:'今日の出来事・事実',text:summary.facts,emoji:'📝'},{label:'最初の気持ち',text:summary.firstEmotion,emoji:'💭'},{label:'感情の変化',text:summary.emotionChange,emoji:'🌱'}].map((item,i)=>(
                 <div key={i} style={{ marginBottom:24, paddingBottom:24, borderBottom:'1px solid #e8d5b0' }}>
-                  <div style={{ fontSize:'0.65rem', letterSpacing:'0.28em', color:'#c9a96e', marginBottom:8, fontWeight:500 }}>{item.emoji} {item.label}</div>
-                  <p style={{ fontSize:'0.93rem', lineHeight:1.9, color:'#2c2520' }}>{item.text}</p>
+                  <div style={{ fontFamily:"'Shippori Mincho',serif", fontSize:'0.7rem', letterSpacing:'0.28em', color:'#c9a96e', marginBottom:8, fontWeight:500 }}>{item.emoji} {item.label}</div>
+                  <p style={{ fontFamily:"'Shippori Mincho',serif", fontSize:'0.95rem', lineHeight:2, color:'#2c2520' }}>{item.text}</p>
                 </div>
               ))}
               <div>
-                <div style={{ fontSize:'0.65rem', letterSpacing:'0.28em', color:'#d4847a', marginBottom:12, fontWeight:500 }}>🌸 あなたへのメッセージ</div>
+                <div style={{ fontFamily:"'Shippori Mincho',serif", fontSize:'0.7rem', letterSpacing:'0.28em', color:'#d4847a', marginBottom:12, fontWeight:500 }}>🌸 あなたへのメッセージ</div>
                 <p style={{ fontFamily:"'Shippori Mincho',serif", fontSize:'1rem', lineHeight:2.1, color:'#b85c52', whiteSpace:'pre-wrap' }}>{summary.encouragement}</p>
               </div>
             </div>
-            <button onClick={restartApp} style={{ width:'100%', background:'transparent', border:'1.5px solid #e8d5b0', borderRadius:16, padding:'14px 24px', fontFamily:"'Zen Maru Gothic',sans-serif", fontSize:'0.875rem', color:'#8a7e79', cursor:'pointer', marginBottom:40 }}>
+            <button onClick={restartApp} style={{ width:'100%', background:'transparent', border:'1.5px solid #e8d5b0', borderRadius:16, padding:'14px 24px', fontFamily:"'Shippori Mincho',serif", fontSize:'0.95rem', color:'#8a7e79', cursor:'pointer', marginBottom:40 }}>
               もう一度はじめる
             </button>
           </div>
         )}
 
         <footer style={{ textAlign:'center', padding:'20px 0 40px' }}>
-          <p style={{ fontSize:'0.68rem', color:'#8a7e79', letterSpacing:'0.1em' }}>Studio Mizuki × AI Journaling</p>
+          <p style={{ fontFamily:"'Shippori Mincho',serif", fontSize:'0.75rem', color:'#8a7e79', letterSpacing:'0.1em' }}>Studio Mizuki × AI Journaling</p>
         </footer>
       </div>
     </>
